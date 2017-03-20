@@ -63,7 +63,7 @@ def get_rank(string):
 
 def get_suiting(string):
     """
-    Parses a string representing the suiting (suited/offsuit) of the player's 
+    Parses a string representing the suiting (suited/offsuit) of the player's
     two hole cards. Returns a string in the correct form for the lookup table.
     Returns None if the input could not be parsed.
     """
@@ -77,8 +77,8 @@ def get_suiting(string):
 
 def get_players(string):
     """
-    Parses a string representing the number of other players (i.e. excluding 
-    the player) in the round. Currently supports only 1-9 other players. 
+    Parses a string representing the number of other players (i.e. excluding
+    the player) in the round. Currently supports only 1-9 other players.
     Returns a string in the correct form for the lookup table.
     Returns None if the input could not be parsed.
     """
@@ -115,10 +115,13 @@ def respond():
     components are assumed to be ordered as above, and space-separated.
     """
 
+    return "Ok"
+
+    """
     # initialize twilio response
     resp = twilio.twiml.Response()
 
-    # retrieve message. 
+    # retrieve message.
     received_message = request.values.get('Body').strip().lower()
     message_list = filter(lambda x: x != '', received_message.split(" "))
 
@@ -128,7 +131,7 @@ def respond():
         ex2 = "7 ace offsuit 9"
         resp.message(ex1 + "\n\n" + ex2)
         return str(resp)
-    
+
     # otherwise, message_list has to contain exactly four items.
     if len(message_list) != 4:
         resp.message(STANDARD_ERRORMSG)
@@ -160,7 +163,7 @@ def respond():
 
     # get the right lookup table
     lookup_table = "lookup-tables/lookup-table-" + players
-    
+
     with open(lookup_table,"r") as lookup:
         for line in lookup:
             # line[4] is going to be 'o' or 's' for offsuit/suited, respectively
@@ -172,9 +175,10 @@ def respond():
                 expected_gain = "Expected unit gain: " + split_line[5]
                 resp.message(p_win + p_tie + expected_gain)
                 return str(resp)
+    """
 
 if __name__ == '__main__':
     # Bind to PORT if defined, otherwise default to 5000.
     port = int(environ.get('PORT', 5000))
-    # Debugging disabled for production build. 
+    # Debugging disabled for production build.
     app.run(host='0.0.0.0', port=port, debug=False)
