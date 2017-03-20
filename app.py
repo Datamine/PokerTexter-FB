@@ -19,7 +19,10 @@ app.config['FACEBOOK_PAGE_ACCESS_TOKEN'] = os.environ['FACEBOOK_PAGE_ACCESS_TOKE
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'mysecretkey')
 app.config['FACEBOOK_WEBHOOK_VERIFY_TOKEN'] = os.environ['FACEBOOK_WEBHOOK_VERIFY_TOKEN']
 
-@app.route('/', methods=['GET', 'POST'])
+def handle_message(*args):
+    return "foo"
+
+@app.route('/fb_webhook', methods=['GET', 'POST'])
 def index():
     """Simple example handler.
 
@@ -39,7 +42,6 @@ def index():
             print 'Received invalid GET request'
             return ''  # Still return a 200, otherwise FB gets upset.
 
-    """
     # Get the request body as a dict, parsed from JSON.
     payload = flask.request.json
 
@@ -71,7 +73,6 @@ def index():
 
     # Return an empty response.
     return ''
-    """
 
 if __name__ == '__main__':
     app.run(debug=True)
