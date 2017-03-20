@@ -1,1 +1,1 @@
-pokertexter_fb: python app.py --log-file=-
+web: gunicorn app --log-file=- -w 4
