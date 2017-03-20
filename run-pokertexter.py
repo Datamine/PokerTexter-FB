@@ -1,13 +1,8 @@
 # John Loeber | contact@johnloeber.com | April 2016 | Python 2.7.11
 
-# adapted from the Twilio quickstart tutorial:
-# https://www.twilio.com/docs/quickstart/python/sms/replying-to-sms-messages
-
 from flask import Flask, request, redirect
 from os import environ
 import twilio.twiml
-# only import stdout if you need to debug. Then use stdout.flush() after print.
-# from sys import stdout
 
 """
 This script runs on Heroku, and is connected to Twilio such that it handles
@@ -115,7 +110,16 @@ def respond():
     components are assumed to be ordered as above, and space-separated.
     """
 
-    return "Ok"
+    # Handle the initial handshake request.
+    if flask.request.method == 'GET':
+        if (flask.request.args.get('hub.mode') == 'subscribe' and
+            flask.request.args.get('hub.verify_token') ==
+            app.config['FACEBOOK_WEBHOOK_VERIFY_TOKEN']):
+            challenge = flask.request.args.get('hub.challenge')
+            return challenge
+        else:
+            print 'Received invalid GET request'
+            return ''  # Still return a 200, otherwise FB gets upset.
 
     """
     # initialize twilio response
