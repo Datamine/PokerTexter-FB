@@ -16,6 +16,13 @@ directory.
 # we'll need the list of ranks for a fast lookup.
 ranks = ["2", "3", "4", "5", "6", "7", "8", "9", "T", "J", "Q", "K", "A"]
 
+# TODO: Set environment variables appropriately.
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
+#app.config['FACEBOOK_PAGE_ACCESS_TOKEN'] = os.environ[
+#    'FACEBOOK_PAGE_ACCESS_TOKEN']
+#app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'mysecretkey')
+app.config['FACEBOOK_WEBHOOK_VERIFY_TOKEN'] = 'mysecretverifytoken'
+
 # standard errormessage as response to bad input
 STANDARD_ERRORMSG = "Error! Could not parse input. " \
                     "Send text in form RANK RANK SUITING OTHER_PLAYERS. " \
