@@ -1,1 +1,1 @@
-web: python run-pokertexter.py --log-file=-
+web: python app.py --log-file=-
