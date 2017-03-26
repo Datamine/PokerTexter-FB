@@ -29,7 +29,8 @@ for lookup_table in os.listdir('/app/lookup-tables'):
                 suited = suited,
                 p_win = probability_win,
                 p_tie = probability_tie,
-                expected_gain = expected_gain
+                expected_gain = expected_gain,
+                players = number_of_players
             )
             db.session.add(hand)
 
