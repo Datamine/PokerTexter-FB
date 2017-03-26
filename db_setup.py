@@ -3,7 +3,8 @@ instantiate/reset the postgres database on Heroku.
 """
 
 import os
-from app import Hand, db
+from app import db
+from models import Hand
 
 db.drop_all()
 db.create_all()
@@ -36,5 +37,5 @@ for lookup_table in os.listdir('/app/lookup-tables'):
 
 db.session.commit()
 
-print("Added all Hands to DB.")
-# print the DB row count
+print("Added all Hands to DB. Rows (expect 1521):")
+print(Hand.query.count())
