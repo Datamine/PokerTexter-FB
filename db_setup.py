@@ -11,7 +11,7 @@ db.create_all()
 for lookup_table in os.listdir('/app/lookup-tables'):
     path = '/app/lookup-tables/' + lookup_table
     # get the number of players from the filename
-    number_of_players = int(lookup_table.split['-'][-1])
+    number_of_players = int(lookup_table.split('-')[-1])
 
     with open(path, 'r') as f:
         for line in f:

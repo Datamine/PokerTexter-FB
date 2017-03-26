@@ -52,7 +52,7 @@ def index():
             challenge = flask.request.args.get('hub.challenge')
             return challenge
         else:
-            print 'Received invalid GET request'
+            print('Received invalid GET request')
             return ''  # Still return a 200, otherwise FB gets upset.
 
     # Get the request body as a dict, parsed from JSON.
