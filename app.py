@@ -24,8 +24,13 @@ class Hand(db.Model):
     # cards are '2', '3', ..., '10', 'J', ..., 'A'
     card_one = db.Column(db.String, nullable=False, required=True)
     card_two = db.Column(db.String, nullable=False, required=True)
+    # true if suited, false if off-suit
     suited = db.Column(db.Boolean, nullable=False, required=True)
+    # number of OTHER players on the table.
     players = db.Column(db.Integer, nullable=False, required=True)
+    p_win = db.Column(db.Float, nullable=False, required=True)
+    p_tie = db.Column(db.Float, nullable=False, required=True)
+    expected_gain = db.Column(db.Float, nullable=False, required=True)
 
 def handle_message(*args):
     return "foo"
