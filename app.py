@@ -8,16 +8,24 @@ import flask
 import requests
 from flask_sqlalchemy import SQLAlchemy
 
-FACEBOOK_API_MESSAGE_SEND_URL = (
-    'https://graph.facebook.com/v2.6/me/messages?access_token=%s')
+FACEBOOK_API_MESSAGE_SEND_URL = ('https://graph.facebook.com/v2.6/me/messages?access_token=%s')
 
 app = flask.Flask(__name__)
 
-# TODO: Set environment variables appropriately.
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
 app.config['FACEBOOK_PAGE_ACCESS_TOKEN'] = os.environ['FACEBOOK_PAGE_ACCESS_TOKEN']
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'mysecretkey')
 app.config['FACEBOOK_WEBHOOK_VERIFY_TOKEN'] = os.environ['FACEBOOK_WEBHOOK_VERIFY_TOKEN']
+
+db = SQLAlchemy(app)
+
+class Hand(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    # cards are '2', '3', ..., '10', 'J', ..., 'A'
+    card_one = db.Column(db.String, nullable=False, required=True)
+    card_two = db.Column(db.String, nullable=False, required=True)
+    suited = db.Column(db.Boolean, nullable=False, required=True)
+    players = db.Column(db.Integer, nullable=False, required=True)
 
 def handle_message(*args):
     return "foo"
