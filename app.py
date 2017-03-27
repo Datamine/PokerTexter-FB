@@ -64,6 +64,7 @@ def get_stats(rank1, rank2, suiting, players):
                             ).first()
 
     return hand.p_win, hand.p_tie, hand.expected_gain
+
 def example():
     """
     returns some examples for correct message formatting.
@@ -102,7 +103,7 @@ def check_input(rank1, rank2, suiting, players):
     if any(map(lambda x: x==None, [rank1, rank2, suiting])):
         return STANDARD_ERRORMSG
 
-    if rank1==rank2 and suiting == "suited":
+    if rank1==rank2 and suiting:
         return "Error! It is impossible to have a suited pair. You may have meant `offsuit`."
 
     return None
@@ -141,7 +142,7 @@ def handle_message(message):
 
     return (
         "P(win): " + str(p_win * 100) + "%\n"
-        "P(tie): " + str(p_win * 100) + "%\n"
+        "P(tie): " + str(p_tie * 100) + "%\n"
         "Expected unit gain: " + str(expected_gain)
     )
 
