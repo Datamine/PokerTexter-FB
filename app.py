@@ -7,7 +7,7 @@ import datetime
 import flask
 import requests
 import parsers
-import db_lookup
+from db_lookup import get_stats
 from flask_sqlalchemy import SQLAlchemy
 
 FACEBOOK_API_MESSAGE_SEND_URL = (
@@ -100,7 +100,7 @@ def handle_message(message):
         return check
 
     try:
-        p_win, p_tie, expected_gain = db_lookup.get_stats(rank1, rank2, suiting, players)
+        p_win, p_tie, expected_gain = get_stats(rank1, rank2, suiting, players)
     except:
         print "Input valid but bad db lookup." + str([rank1, rank2, suiting, players])
         return "Error! Input valid but DataBase lookup failed? Please report this bug."
