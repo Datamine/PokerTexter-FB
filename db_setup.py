@@ -3,8 +3,7 @@ instantiate/reset the postgres database on Heroku.
 """
 
 import os
-from app import app, db
-from models import Hand
+from app import app, db, Hand
 
 with app.app_context():
     db.drop_all()

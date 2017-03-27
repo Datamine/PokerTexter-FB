@@ -7,9 +7,8 @@ import datetime
 import flask
 import requests
 import parsers
-
-from database import db
-from db_lookup import get_stats
+from sqlalchemy import and_
+from flask_sqlalchemy import SQLAlchemy
 
 FACEBOOK_API_MESSAGE_SEND_URL = (
     'https://graph.facebook.com/v2.6/me/messages?access_token=%s'
@@ -21,16 +20,50 @@ STANDARD_ERRORMSG = (
     "Please respond with `examples` to see some examples of correct use."
 )
 
-def create_app():
-    app = flask.Flask(__name__)
-    app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-    app.config['FACEBOOK_PAGE_ACCESS_TOKEN'] = os.environ['FACEBOOK_PAGE_ACCESS_TOKEN']
-    app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'mysecretkey')
-    app.config['FACEBOOK_WEBHOOK_VERIFY_TOKEN'] = os.environ['FACEBOOK_WEBHOOK_VERIFY_TOKEN']
-    db.init_app(app)
-    return app
+app = flask.Flask(__name__)
 
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['FACEBOOK_PAGE_ACCESS_TOKEN'] = os.environ['FACEBOOK_PAGE_ACCESS_TOKEN']
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'mysecretkey')
+app.config['FACEBOOK_WEBHOOK_VERIFY_TOKEN'] = os.environ['FACEBOOK_WEBHOOK_VERIFY_TOKEN']
+
+db = SQLAlchemy(app)
+
+class Hand(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    # ranks are '2', '3', ..., '10', 'J', ..., 'A'
+    rank_one = db.Column(db.String, nullable=False)
+    rank_two = db.Column(db.String, nullable=False)
+    # true if suited, false if off-suit
+    suited = db.Column(db.Boolean, nullable=False)
+    # number of OTHER players on the table.
+    players = db.Column(db.Integer, nullable=False)
+    p_win = db.Column(db.Float, nullable=False)
+    p_tie = db.Column(db.Float, nullable=False)
+    expected_gain = db.Column(db.Float, nullable=False)
+
+def get_stats(rank1, rank2, suiting, players):
+    """
+    Query the Postgres DB for this particular Hand.
+    """
+
+    ranks = ["2", "3", "4", "5", "6", "7", "8", "9", "T", "J", "Q", "K", "A"]
+    # determine which of {rank1, rank2} is higher-ranked.
+    # in the lookup table, hands are indexed in form RANK1 RANK2 where RANK1 <= RANK2.
+    if ranks.index(rank1) <= ranks.index(rank2):
+        lower, higher = rank1, rank2
+    else:
+        lower, higher = rank2, rank1
+
+    hand = Hand.query.filter(and_(
+                                Hand.rank_one == lower,
+                                Hand.rank_two == higher,
+                                Hand.suited == suiting,
+                                Hand.players == players)
+                            ).first()
+
+    return hand.p_win, hand.p_tie, hand.expected_gain
 def example():
     """
     returns some examples for correct message formatting.
@@ -160,5 +193,4 @@ def webhook():
     return ''
 
 if __name__ == '__main__':
-    app = create_app()
     app.run(debug=True)
