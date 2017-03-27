@@ -7,8 +7,7 @@ import datetime
 import flask
 import requests
 import parsers
-from models import Hand
-from sqlalchemy import and_
+import db_lookup
 from flask_sqlalchemy import SQLAlchemy
 
 FACEBOOK_API_MESSAGE_SEND_URL = (
@@ -20,7 +19,6 @@ STANDARD_ERRORMSG = (
     "Error! I couldn't understand that! "
     "Please respond with `examples` to see some examples of correct use."
 )
-
 
 app = flask.Flask(__name__)
 
@@ -75,28 +73,6 @@ def check_input(rank1, rank2, suiting, players):
 
     return None
 
-def get_stats(rank1, rank2, suiting, players):
-    """
-    Query the Postgres DB for this particular Hand.
-    """
-
-    ranks = ["2", "3", "4", "5", "6", "7", "8", "9", "T", "J", "Q", "K", "A"]
-    # determine which of {rank1, rank2} is higher-ranked.
-    # in the lookup table, hands are indexed in form RANK1 RANK2 where RANK1 <= RANK2.
-    if ranks.index(rank1) <= ranks.index(rank2):
-        lower, higher = rank1, rank2
-    else:
-        lower, higher = rank2, rank1
-
-    hand = Hand.query.filter(and_(
-                                Hand.rank_one == lower,
-                                Hand.rank_two == higher,
-                                Hand.suited == suiting,
-                                Hand.players == players)
-                            ).first()
-
-    return hand.p_win, hand.p_tie, hand.expected_gain
-
 def handle_message(message):
     """
     Where `message` is a string that has already been stripped and lower-cased,
@@ -124,7 +100,7 @@ def handle_message(message):
         return check
 
     try:
-        p_win, p_tie, expected_gain = get_stats(rank1, rank2, suiting, players)
+        p_win, p_tie, expected_gain = db_lookup.get_stats(rank1, rank2, suiting, players)
     except:
         print "Input valid but bad db lookup." + str([rank1, rank2, suiting, players])
         return "Error! Input valid but DataBase lookup failed? Please report this bug."
