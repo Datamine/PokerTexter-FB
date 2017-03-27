@@ -23,6 +23,7 @@ STANDARD_ERRORMSG = (
 app = flask.Flask(__name__)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['FACEBOOK_PAGE_ACCESS_TOKEN'] = os.environ['FACEBOOK_PAGE_ACCESS_TOKEN']
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'mysecretkey')
 app.config['FACEBOOK_WEBHOOK_VERIFY_TOKEN'] = os.environ['FACEBOOK_WEBHOOK_VERIFY_TOKEN']
