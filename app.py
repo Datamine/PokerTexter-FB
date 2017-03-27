@@ -6,7 +6,7 @@ import os
 import datetime
 import flask
 import requests
-from parsers import *
+import parsers
 from sqlalchemy import and_
 from flask_sqlalchemy import SQLAlchemy
 
