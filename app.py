@@ -88,8 +88,8 @@ def get_stats(rank1, rank2, suiting, players):
         lower, higher = rank2, rank1
 
     hand = Hand.query.filter(and_(
-                                Hand.rank_one == rank1,
-                                Hand.rank_two == rank2,
+                                Hand.rank_one == lower,
+                                Hand.rank_two == higher,
                                 Hand.suited == suiting,
                                 Hand.players == players)
                             ).first()
