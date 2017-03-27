@@ -7,6 +7,7 @@ import datetime
 import flask
 import requests
 import parsers
+from models import Hand
 from sqlalchemy import and_
 from flask_sqlalchemy import SQLAlchemy
 
