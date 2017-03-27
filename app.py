@@ -96,7 +96,7 @@ def handle_message(message):
     if 'example' in message:
         return example()
 
-    message_tokens = filter(lambda x: x != '', received_message.split(" "))
+    message_tokens = filter(lambda x: x != '', message.split(" "))
 
     if len(message_tokens) != 4:
         # maybe use a better error message here?
