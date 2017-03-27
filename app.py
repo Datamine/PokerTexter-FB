@@ -70,7 +70,7 @@ def example():
     """
 
     header = (
-        "A message needs to be formatted like this: \n"
+        "A message needs to be formatted, in order, like this: \n"
         "  <card rank>\n"
         "  <card rank>\n"
         "  <whether both cards are of the same suit>\n"
@@ -79,7 +79,7 @@ def example():
     )
 
     examples = (
-        "ONE EIGHT SUITED one\n"
+        "ONE EIGHT SUITED ONE\n"
         "7 ace offsuit 9\n"
         "Jack Q suited 5"
     )
