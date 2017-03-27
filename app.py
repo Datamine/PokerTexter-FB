@@ -116,6 +116,7 @@ def handle_message(message):
     try:
         p_win, p_tie, expected_gain = get_stats(rank1, rank2, suiting, players)
     except:
+        print "Input valid but bad db lookup." + str([rank1, rank2, suiting, players])
         return "Error! Input valid but DataBase lookup failed? Please report this bug."
 
     return (
