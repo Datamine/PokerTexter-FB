@@ -109,7 +109,7 @@ def handle_message(message):
     suiting = parsers.get_suiting(message_tokens[2])
     players = parsers.get_players(message_tokens[3])
 
-    check = check_input
+    check = check_input()
     if check != None:
         return check
 
