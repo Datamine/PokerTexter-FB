@@ -79,7 +79,7 @@ def example():
     )
 
     examples = (
-        "SEVEN EIGHT SUITED one\n"
+        "ONE EIGHT SUITED one\n"
         "7 ace offsuit 9\n"
         "Jack Q suited 5"
     )
