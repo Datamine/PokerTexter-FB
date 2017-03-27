@@ -3,11 +3,12 @@ instantiate/reset the postgres database on Heroku.
 """
 
 import os
-from app import db
+from app import app, db
 from models import Hand
 
-db.drop_all()
-db.create_all()
+with app.app_context():
+    db.drop_all()
+    db.create_all()
 
 for lookup_table in os.listdir('/app/lookup-tables'):
     path = '/app/lookup-tables/' + lookup_table

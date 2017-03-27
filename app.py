@@ -7,8 +7,9 @@ import datetime
 import flask
 import requests
 import parsers
+
+from database import db
 from db_lookup import get_stats
-from flask_sqlalchemy import SQLAlchemy
 
 FACEBOOK_API_MESSAGE_SEND_URL = (
     'https://graph.facebook.com/v2.6/me/messages?access_token=%s'
@@ -20,15 +21,15 @@ STANDARD_ERRORMSG = (
     "Please respond with `examples` to see some examples of correct use."
 )
 
-app = flask.Flask(__name__)
-
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['FACEBOOK_PAGE_ACCESS_TOKEN'] = os.environ['FACEBOOK_PAGE_ACCESS_TOKEN']
-app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'mysecretkey')
-app.config['FACEBOOK_WEBHOOK_VERIFY_TOKEN'] = os.environ['FACEBOOK_WEBHOOK_VERIFY_TOKEN']
-
-db = SQLAlchemy(app)
+def create_app():
+    app = flask.Flask(__name__)
+    app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    app.config['FACEBOOK_PAGE_ACCESS_TOKEN'] = os.environ['FACEBOOK_PAGE_ACCESS_TOKEN']
+    app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'mysecretkey')
+    app.config['FACEBOOK_WEBHOOK_VERIFY_TOKEN'] = os.environ['FACEBOOK_WEBHOOK_VERIFY_TOKEN']
+    db.init_app(app)
+    return app
 
 def example():
     """
@@ -159,4 +160,5 @@ def webhook():
     return ''
 
 if __name__ == '__main__':
+    app = create_app()
     app.run(debug=True)
