@@ -6,9 +6,9 @@ from app import db
 
 class Hand(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    # cards are '2', '3', ..., '10', 'J', ..., 'A'
-    card_one = db.Column(db.String, nullable=False)
-    card_two = db.Column(db.String, nullable=False)
+    # ranks are '2', '3', ..., '10', 'J', ..., 'A'
+    rank_one = db.Column(db.String, nullable=False)
+    rank_two = db.Column(db.String, nullable=False)
     # true if suited, false if off-suit
     suited = db.Column(db.Boolean, nullable=False)
     # number of OTHER players on the table.

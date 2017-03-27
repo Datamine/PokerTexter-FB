@@ -133,6 +133,7 @@ def respond():
     """
     # initialize twilio response
     resp = twilio.twiml.Response()
+    """
 
     # retrieve message.
     received_message = request.values.get('Body').strip().lower()
