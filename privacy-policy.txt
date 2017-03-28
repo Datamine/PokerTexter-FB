@@ -1,0 +1,7 @@
+PokerTexter-FB 
+
+Facebook Messenger App Privacy Policy
+
+PokerTexter-FB does not retain any of your submitted data, or submission metadata, on our servers. (As this is an open-souce project, you are free to audit our code.)
+
+The user interacts with PokerTexter-FB through Facebook Messenger. As such, Facebook messenger's data retention and privacy policies may apply.
